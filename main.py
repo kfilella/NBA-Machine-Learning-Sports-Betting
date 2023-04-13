@@ -84,7 +84,7 @@ def main():
         games = create_todays_games_from_odds(odds)
         if len(games) == 0:
             # morochobot.enviar_mensaje_colores('No hay juegasos ohy pues sanguito')
-            morochobot.enviar_mensaje_colores('Sentiment analysis: Basándome en los últimos 1,000 tuits con el hashtag #NBA, he concluido que: Villergas vale verga.')
+            morochobot.enviar_mensaje_colores('Sentiment analysis: Basándome en los últimos 1,000 tuits con el hashtag #NBA, he concluido que: Villergas vale verga. Deposita emano jueputa.')
             return
         if((games[0][0]+':'+games[0][1]) not in list(odds.keys())):
             morochobot.enviar_mensaje_colores(games[0][0]+':'+games[0][1])
