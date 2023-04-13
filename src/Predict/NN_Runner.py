@@ -5,6 +5,7 @@ import tensorflow as tf
 from colorama import Fore, Style, init, deinit
 from tensorflow.keras.models import load_model
 from src.Utils import Expected_Value
+import morochobot
 
 init()
 model = load_model('Models/NN_Models/Trained-Model-ML-1680133120.689445')
@@ -40,25 +41,25 @@ def nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_
             winner_confidence = round(winner_confidence[0][1] * 100, 1)
             if under_over == 0:
                 un_confidence = round(ou_predictions_array[count][0][0] * 100, 1)
-                print(Fore.GREEN + home_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ' vs ' + Fore.RED + away_team + Style.RESET_ALL + ': ' +
+                morochobot.enviar_mensaje_colores(Fore.GREEN + home_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ' vs ' + Fore.RED + away_team + Style.RESET_ALL + ': ' +
                       Fore.MAGENTA + 'UNDER ' + Style.RESET_ALL + str(todays_games_uo[count]) + Style.RESET_ALL + Fore.CYAN + f" ({un_confidence}%)" + Style.RESET_ALL)
             else:
                 un_confidence = round(ou_predictions_array[count][0][1] * 100, 1)
-                print(Fore.GREEN + home_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ' vs ' + Fore.RED + away_team + Style.RESET_ALL + ': ' +
+                morochobot.enviar_mensaje_colores(Fore.GREEN + home_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ' vs ' + Fore.RED + away_team + Style.RESET_ALL + ': ' +
                       Fore.BLUE + 'OVER ' + Style.RESET_ALL + str(todays_games_uo[count]) + Style.RESET_ALL + Fore.CYAN + f" ({un_confidence}%)" + Style.RESET_ALL)
         else:
             winner_confidence = round(winner_confidence[0][0] * 100, 1)
             if under_over == 0:
                 un_confidence = round(ou_predictions_array[count][0][0] * 100, 1)
-                print(Fore.RED + home_team + Style.RESET_ALL + ' vs ' + Fore.GREEN + away_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ': ' +
+                morochobot.enviar_mensaje_colores(Fore.RED + home_team + Style.RESET_ALL + ' vs ' + Fore.GREEN + away_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ': ' +
                       Fore.MAGENTA + 'UNDER ' + Style.RESET_ALL + str(todays_games_uo[count]) + Style.RESET_ALL + Fore.CYAN + f" ({un_confidence}%)" + Style.RESET_ALL)
             else:
                 un_confidence = round(ou_predictions_array[count][0][1] * 100, 1)
-                print(Fore.RED + home_team + Style.RESET_ALL + ' vs ' + Fore.GREEN + away_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ': ' +
+                morochobot.enviar_mensaje_colores(Fore.RED + home_team + Style.RESET_ALL + ' vs ' + Fore.GREEN + away_team + Style.RESET_ALL + Fore.CYAN + f" ({winner_confidence}%)" + Style.RESET_ALL + ': ' +
                       Fore.BLUE + 'OVER ' + Style.RESET_ALL + str(todays_games_uo[count]) + Style.RESET_ALL + Fore.CYAN + f" ({un_confidence}%)" + Style.RESET_ALL)
         count += 1
 
-    print("--------------------Expected Value---------------------")
+    morochobot.enviar_mensaje_colores("--------------------Expected Value---------------------")
     count = 0
     for game in games:
         home_team = game[0]
@@ -66,14 +67,14 @@ def nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_
         ev_home = float(Expected_Value.expected_value(ml_predictions_array[count][0][1], int(home_team_odds[count])))
         ev_away = float(Expected_Value.expected_value(ml_predictions_array[count][0][0], int(away_team_odds[count])))
         if ev_home > 0:
-            print(home_team + ' EV: ' + Fore.GREEN + str(ev_home) + Style.RESET_ALL)
+            morochobot.enviar_mensaje_colores(home_team + ' EV: ' + Fore.GREEN + str(ev_home) + Style.RESET_ALL)
         else:
-            print(home_team + ' EV: ' + Fore.RED + str(ev_home) + Style.RESET_ALL)
+            morochobot.enviar_mensaje_colores(home_team + ' EV: ' + Fore.RED + str(ev_home) + Style.RESET_ALL)
 
         if ev_away > 0:
-            print(away_team + ' EV: ' + Fore.GREEN + str(ev_away) + Style.RESET_ALL)
+            morochobot.enviar_mensaje_colores(away_team + ' EV: ' + Fore.GREEN + str(ev_away) + Style.RESET_ALL)
         else:
-            print(away_team + ' EV: ' + Fore.RED + str(ev_away) + Style.RESET_ALL)
+            morochobot.enviar_mensaje_colores(away_team + ' EV: ' + Fore.RED + str(ev_away) + Style.RESET_ALL)
         count += 1
 
     deinit()
