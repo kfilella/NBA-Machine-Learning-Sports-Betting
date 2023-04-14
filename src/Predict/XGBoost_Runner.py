@@ -19,6 +19,7 @@ xgb_uo.load_model('Models/XGBoost_Models/XGBoost_54.8%_UO-8.json')
 
 def xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds):
     ml_predictions_array = []
+    odd_str = "\n---------------XGBoost Model Predictions---------------\n"
 
     for row in data:
         ml_predictions_array.append(xgb_ml.predict(xgb.DMatrix(np.array([row]))))
@@ -45,32 +46,20 @@ def xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team
             winner_confidence = round(winner_confidence[0][1] * 100, 1)
             if under_over == 0:
                 un_confidence = round(ou_predictions_array[count][0][0] * 100, 1)
-                morochobot.enviar_mensaje_colores(
-                     home_team   + f" ({winner_confidence}%)"  + ' vs '  + away_team  + ': ' +
-                     'UNDER '  + str(
-                        todays_games_uo[count])   + f" ({un_confidence}%)" )
+                odd_str = odd_str + home_team + f" ({winner_confidence}%)" + ' vs ' + away_team + ': ' + 'UNDER ' + str(todays_games_uo[count]) + f" ({un_confidence}%)\n"
             else:
                 un_confidence = round(ou_predictions_array[count][0][1] * 100, 1)
-                morochobot.enviar_mensaje_colores(
-                     home_team   + f" ({winner_confidence}%)"  + ' vs '  + away_team  + ': ' +
-                     'OVER '  + str(
-                        todays_games_uo[count])   + f" ({un_confidence}%)" )
+                odd_str = odd_str + home_team + f" ({winner_confidence}%)" + ' vs ' + away_team + ': ' + 'OVER ' + str(todays_games_uo[count]) + f" ({un_confidence}%)\n"
         else:
             winner_confidence = round(winner_confidence[0][0] * 100, 1)
             if under_over == 0:
                 un_confidence = round(ou_predictions_array[count][0][0] * 100, 1)
-                morochobot.enviar_mensaje_colores(
-                     home_team  + ' vs '  + away_team   + f" ({winner_confidence}%)"  + ': ' +
-                     'UNDER '  + str(
-                        todays_games_uo[count])   + f" ({un_confidence}%)" )
+                odd_str = odd_str + home_team + ' vs ' + away_team + f" ({winner_confidence}%)" + ': ' +'UNDER ' + str(todays_games_uo[count]) + f" ({un_confidence}%)\n"
             else:
                 un_confidence = round(ou_predictions_array[count][0][1] * 100, 1)
-                morochobot.enviar_mensaje_colores(
-                     home_team  + ' vs '  + away_team   + f" ({winner_confidence}%)"  + ': ' +
-                     'OVER '  + str(
-                        todays_games_uo[count])   + f" ({un_confidence}%)" )
+                odd_str = odd_str + home_team + ' vs ' + away_team + f" ({winner_confidence}%)" + ': ' +'OVER ' + str(todays_games_uo[count]) + f" ({un_confidence}%)\n"
         count += 1
-    morochobot.enviar_mensaje_colores("--------------------Expected Value---------------------")
+    odd_str = odd_str + "\n--------------------Expected Value---------------------\n"
     count = 0
     for game in games:
         home_team = game[0]
@@ -80,14 +69,15 @@ def xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team
             ev_home = float(Expected_Value.expected_value(ml_predictions_array[count][0][1], int(home_team_odds[count])))
             ev_away = float(Expected_Value.expected_value(ml_predictions_array[count][0][0], int(away_team_odds[count])))
         if ev_home > 0:
-            morochobot.enviar_mensaje_colores(home_team + ' EV: '  + str(ev_home) )
+            odd_str = odd_str + home_team + ' EV: ' + str(ev_home) + '\n'
         else:
-            morochobot.enviar_mensaje_colores(home_team + ' EV: '  + str(ev_home) )
+            odd_str = odd_str + home_team + ' EV: ' + str(ev_home) + '\n'
 
         if ev_away > 0:
-            morochobot.enviar_mensaje_colores(away_team + ' EV: '  + str(ev_away) )
+            odd_str = odd_str + away_team + ' EV: ' + str(ev_away) + '\n'
         else:
-            morochobot.enviar_mensaje_colores(away_team + ' EV: '  + str(ev_away) )
+            odd_str = odd_str + away_team + ' EV: ' + str(ev_away) + '\n'
         count += 1
-
+    odd_str = odd_str + "-------------------------------------------------------\n"
+    morochobot.enviar_mensaje_colores(odd_str)
     deinit()
