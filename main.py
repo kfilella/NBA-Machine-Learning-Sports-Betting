@@ -78,13 +78,13 @@ def createTodaysGames(games, df, odds):
 
 def main():
     morochobot.enviar_mensaje_colores('NBA-Machine-Learning-Sports-Betting-Chupalo-Morocho con Sentiment Analysis v0.1')
+    morochobot.enviar_mensaje_colores('Sentiment analysis: Basándome en los últimos 1,000 tuits con el hashtag #NBA, he concluido que: Villergas vale verga.')
     odds = None
     if args.odds:
         odds = SbrOddsProvider(sportsbook=args.odds).get_odds()
         games = create_todays_games_from_odds(odds)
         if len(games) == 0:
-            # morochobot.enviar_mensaje_colores('No hay juegasos ohy pues sanguito')
-            morochobot.enviar_mensaje_colores('Sentiment analysis: Basándome en los últimos 1,000 tuits con el hashtag #NBA, he concluido que: Villergas vale verga. Deposita emano jueputa.')
+            morochobot.enviar_mensaje_colores('No hay juegasos ohy pues sanguito')
             return
         if((games[0][0]+':'+games[0][1]) not in list(odds.keys())):
             morochobot.enviar_mensaje_colores(games[0][0]+':'+games[0][1])
