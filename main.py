@@ -56,7 +56,7 @@ def createTodaysGames(games, df, odds):
         last_away_date = away_games.loc[schedule_df['Date'] <= datetime.today()].sort_values('Date',ascending=False).head(1)['Date'].iloc[0]
         home_days_off = timedelta(days=1) + datetime.today() - last_home_date
         away_days_off = timedelta(days=1) + datetime.today() - last_away_date
-        # morochobot.enviar_mensaje_colores(f"{away_team} days off: {away_days_off.days} @ {home_team} days off: {home_days_off.days}")
+        # print(f"{away_team} days off: {away_days_off.days} @ {home_team} days off: {home_days_off.days}")
 
         home_team_days_rest.append(home_days_off.days)
         away_team_days_rest.append(away_days_off.days)
@@ -77,25 +77,25 @@ def createTodaysGames(games, df, odds):
     return data, todays_games_uo, frame_ml, home_team_odds, away_team_odds
 
 def main():
-    morochobot.enviar_mensaje_colores('NBA-Machine-Learning-Sports-Betting-Chupalo-Morocho con Sentiment Analysis v0.1')
+    print('NBA-Machine-Learning-Sports-Betting-Chupalo-Morocho con Sentiment Analysis v0.1')
     odds = None
     if args.odds:
         odds = SbrOddsProvider(sportsbook=args.odds).get_odds()
         games = create_todays_games_from_odds(odds)
         if len(games) == 0:
-            # morochobot.enviar_mensaje_colores('No hay juegasos ohy pues sanguito')
-            morochobot.enviar_mensaje_colores('Sentiment analysis: Basándome en los últimos 1,000 tuits con el hashtag #NBA, he concluido que: Villergas vale verga.')
+            # print('No hay juegasos ohy pues sanguito')
+            print('Sentiment analysis: Basándome en los últimos 1,000 tuits con el hashtag #NBA, he concluido que: Villergas vale verga.')
             return
         if((games[0][0]+':'+games[0][1]) not in list(odds.keys())):
-            morochobot.enviar_mensaje_colores(games[0][0]+':'+games[0][1])
-            morochobot.enviar_mensaje_colores(Fore.RED, "--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
-            morochobot.enviar_mensaje_colores(Style.RESET_ALL)
+            print(games[0][0]+':'+games[0][1])
+            print(Fore.RED, "--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
+            print(Style.RESET_ALL)
             odds = None
         else:
-            morochobot.enviar_mensaje_colores(f"------------------{args.odds} odds data------------------")
+            print(f"------------------{args.odds} odds data------------------")
             for g in odds.keys():
                 home_team, away_team = g.split(":")
-                morochobot.enviar_mensaje_colores(f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
+                print(f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
     else:
         data = get_todays_games_json(todays_games_url)
         games = create_todays_games(data)
@@ -103,22 +103,22 @@ def main():
     df = to_data_frame(data)
     data, todays_games_uo, frame_ml, home_team_odds, away_team_odds = createTodaysGames(games, df, odds)
     if args.nn:
-        morochobot.enviar_mensaje_colores("------------Neural Network Model Predictions-----------")
+        print("------------Neural Network Model Predictions-----------")
         data = tf.keras.utils.normalize(data, axis=1)
         NN_Runner.nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds)
-        morochobot.enviar_mensaje_colores("-------------------------------------------------------")
+        print("-------------------------------------------------------")
     if args.xgb:
-        morochobot.enviar_mensaje_colores("---------------XGBoost Model Predictions---------------")
+        print("---------------XGBoost Model Predictions---------------")
         XGBoost_Runner.xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds)
-        morochobot.enviar_mensaje_colores("-------------------------------------------------------")
+        print("-------------------------------------------------------")
     if args.A:
-        morochobot.enviar_mensaje_colores("---------------XGBoost Model Predictions---------------")
+        print("---------------XGBoost Model Predictions---------------")
         XGBoost_Runner.xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds)
-        morochobot.enviar_mensaje_colores("-------------------------------------------------------")
+        print("-------------------------------------------------------")
         data = tf.keras.utils.normalize(data, axis=1)
-        morochobot.enviar_mensaje_colores("------------Neural Network Model Predictions-----------")
+        print("------------Neural Network Model Predictions-----------")
         NN_Runner.nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds)
-        morochobot.enviar_mensaje_colores("-------------------------------------------------------")
+        print("-------------------------------------------------------")
 
 
 if __name__ == "__main__":
