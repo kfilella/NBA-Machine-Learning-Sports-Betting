@@ -111,6 +111,7 @@ def main():
         XGBoost_Runner.xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds)
         data = tf.keras.utils.normalize(data, axis=1)
         NN_Runner.nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds)
+    morochobot.enviar_mensaje_colores('Deposita emano jueputa')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Model to Run')
