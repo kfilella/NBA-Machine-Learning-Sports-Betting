@@ -5,7 +5,6 @@ import tensorflow as tf
 from colorama import Fore, Style, init, deinit
 from tensorflow.keras.models import load_model
 from src.Utils import Expected_Value
-import morochobot
 
 init()
 model = load_model('Models/NN_Models/Trained-Model-ML-1680133120.689445')

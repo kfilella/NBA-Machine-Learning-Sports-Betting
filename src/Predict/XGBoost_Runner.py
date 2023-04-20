@@ -5,7 +5,6 @@ import pandas as pd
 import xgboost as xgb
 from colorama import Fore, Style, init, deinit
 from src.Utils import Expected_Value
-import morochobot
 
 
 # from src.Utils.Dictionaries import team_index_current
